@@ -1,0 +1,40 @@
+:root {
+  --black: rgb(22, 23, 24);
+  --white: rgb(193, 190, 185) 
+}
+
+html {
+  background-color: var(--black);
+}
+
+body {
+  margin: 0;
+  font-family: 'Roboto Mono', monospace;
+  display: flex;
+  align-content: center;
+  flex-direction: column;
+  text-align: center;
+  justify-content: space-between;
+  height: 325px;
+}
+
+a, a:active, a:hover, a:link, a:visited, body {
+  color: var(--white);
+}
+
+#name {
+  padding-top: 100px;
+  margin-bottom: 0px;
+  font-size: 40px;
+  font-weight: lighter;
+}
+
+#description {
+  font-weight: lighter;
+  font-size: 21px;
+}
+
+#links > a {
+  font-size: 35px;
+  margin: 0 5px;
+}

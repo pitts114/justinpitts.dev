@@ -1,0 +1,35 @@
+version: '3'
+services:
+  traefik:
+    image: traefik
+    command:
+      - "--api.insecure=false"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entryPoint.scheme=https"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
+      - "--certificatesresolvers.myresolver.acme.email=contact@pitts-software.com"
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+    ports:
+      - "80:80"
+      - "443:443"
+    restart: always
+    volumes:
+      - "letsencrypt:/letsencrypt"
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  justinpittsdev:
+    image: registry.pitts-software.com/justinpittsdev:sometag
+    restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.justinpittsdev.tls=true"
+      - "traefik.http.routers.justinpittsdev.rule=Host(`justinpitts.dev`, `www.justinpitts.dev`)"
+      - "traefik.http.routers.justinpittsdev.entrypoints=websecure"
+      - "traefik.http.routers.justinpittsdev.tls.certresolver=myresolver"
+
+volumes:
+  letsencrypt:
